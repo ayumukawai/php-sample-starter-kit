@@ -28,29 +28,30 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 </head>
 
 <body>
-  <h1 class="my-3">新人歓迎会参加アンケート</h1>
-  <form method="POST" action="./add.php">
-    <div>
-      <label for="username">氏名</label>
-      <input type="text" name="username" />
-    </div>
-    <div>
-      <label for="participation_id">新人歓迎会に参加しますか？:</label>
-      <select name="participation_id">
-        <option value="1">参加！</option>
-        <option value="2">不参加で。。。</optiohn>
-      </select>
-    </div>
-    <div>
-      <label for="comment">コメント:</label>
-      <textarea name="comment"></textarea>
-    </div>
-    <div>
-      <a href="/">戻る</a>
-      <button type="submit">送信</button>
-    </div>
-  </form>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <div class="container text-left w-25 mt-5">
+    <h1 class="my-3">新人歓迎会参加アンケート</h1>
+    <form method="POST" action="./add.php">
+      <div class="d-flex flex-column mt-3">
+        <label for="username">氏名</label>
+        <input type="text" name="username" />
+      </div>
+      <div class="d-flex flex-column mt-3">
+        <label for="participation_id">新人歓迎会に参加しますか？:</label>
+        <select name="participation_id" class="">
+          <option value="1">参加！</option>
+          <option value="2">不参加で。。。</optiohn>
+        </select>
+      </div>
+      <div class="d-flex flex-column mt-3">
+        <label for="comment">コメント:</label>
+        <textarea name="comment"></textarea>
+      </div>
+      <div class="mt-3">
+        <a href="/index.php" class="btn btn-secondary">戻る</a>
+        <button type="submit" class="btn btn-secondary">送信</button>
+      </div>
+    </form>
+  </div>
 </body>
 
 </html>
