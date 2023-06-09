@@ -14,32 +14,45 @@
 </head>
 
 <body>
-    <div class="container text-left w-50 mt-5">
+    <div class="container text-left w-75 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート結果</h1>
 
-        <div class="d-flex flex-row border-bottom my-3">
-            <div class="px-5">ID</div>
-            <div class="px-5">氏名</div>
-            <div class="px-5">参加するかどうか</div>
-            <div class="px-5">コメント</div>
+        <div class="row border-bottom border-2 border-dark my-3">
+            <p class="h6 col">ID</p>
+            <p class="h6 col">氏名</p>
+            <p class="h6 col">参加するかどうか</p>
+            <p class="h6 col">コメント</p>
+            <div class="col"></div>
         </div>
-        <div class="d-flex flex-row my-1">
-            <div class="px-5">1</div>
-            <div class="px-5">川井歩</div>
-            <div class="px-5">参加</div>
-            <div class="px-5">楽しみにしております。</div>
+        <div class="row my-1">
+            <div class="col">1</div>
+            <div class="col">川井歩</div>
+            <div class="col">参加</div>
+            <div class="col">楽しみにしております。</div>
+            <div class="col">
+                <a href="/edit.php">編集</a>
+                <a href="/delete.php">削除</a>
+            </div>
         </div>
-        <div class="d-flex flex-row my-1">
-            <div class="px-5">2</div>
-            <div class="px-5">海色カイ</div>
-            <div class="px-5">不参加</div>
-            <div class="px-5">仕事が忙しいです。</div>
+        <div class="row my-1">
+            <div class="col">2</div>
+            <div class="col">海色カイ</div>
+            <div class="col">不参加</div>
+            <div class="col">仕事が忙しいです。</div>
+            <div class="col">
+                <a href="/edit.php">編集</a>
+                <a href="/delete.php">削除</a>
+            </div>
         </div>
-        <div class="d-flex flex-row my-1">
-            <div class="px-5">3</div>
-            <div class="px-5">空色そら</div>
-            <div class="px-5">参加</div>
-            <div class="px-5"></div>
+        <div class="row my-1">
+            <div class="col">3</div>
+            <div class="col">空色そら</div>
+            <div class="col">参加</div>
+            <div class="col"></div>
+            <div class="col">
+                <a href="/edit.php">編集</a>
+                <a href="/delete.php">削除</a>
+            </div>
         </div>
 
         <a href="/add.php" class="btn btn-secondary my-2">アンケートに回答する</a>
