@@ -1,4 +1,11 @@
 <?php
+$datas = [
+    ["1",  "川井歩", "参加",  ""],
+    ["2",  "海色カイ", "不参加",  "仕事が忙しいです"],
+    ["3",  "空色そら", "参加",  ""],
+];
+
+$samples = array("1", "2", "3");
 
 ?>
 
@@ -24,37 +31,18 @@
             <p class="h6 col">コメント</p>
             <div class="col"></div>
         </div>
-        <div class="row my-1">
-            <div class="col">1</div>
-            <div class="col">川井歩</div>
-            <div class="col">参加</div>
-            <div class="col">楽しみにしております。</div>
-            <div class="col">
-                <a href="/edit.php">編集</a>
-                <a href="/delete.php">削除</a>
+        <?php foreach ($datas as $data) : ?>
+            <div class="row my-1">
+                <div class="col"><?php echo $data[0] ?></div>
+                <div class="col"><?php echo $data[1] ?></div>
+                <div class="col"><?php echo $data[2] ?></div>
+                <div class="col"><?php echo $data[3] ?></div>
+                <div class="col">
+                    <a href="/edit.php">編集</a>
+                    <a href="/delete.php">削除</a>
+                </div>
             </div>
-        </div>
-        <div class="row my-1">
-            <div class="col">2</div>
-            <div class="col">海色カイ</div>
-            <div class="col">不参加</div>
-            <div class="col">仕事が忙しいです。</div>
-            <div class="col">
-                <a href="/edit.php">編集</a>
-                <a href="/delete.php">削除</a>
-            </div>
-        </div>
-        <div class="row my-1">
-            <div class="col">3</div>
-            <div class="col">空色そら</div>
-            <div class="col">参加</div>
-            <div class="col"></div>
-            <div class="col">
-                <a href="/edit.php">編集</a>
-                <a href="/delete.php">削除</a>
-            </div>
-        </div>
-
+        <?php endforeach ?>
         <a href="/add.php" class="btn btn-secondary my-2">アンケートに回答する</a>
     </div>
 </body>
