@@ -1,11 +1,14 @@
 <?php
+// データベースへの接続
+$link = mysqli_connect('db', 'root', 'secret', 'sample');
+if ($link == null) {
+    die("データベースの接続に失敗しました。");
+}
 
-$datas = [
-    ["1",  "川井歩", "参加",  ""],
-    ["2",  "海色カイ", "不参加",  "仕事が忙しいです"],
-    ["3",  "空色そら", "参加",  ""],
-];
+mysqli_set_charset($link, 'utf8');
 
+$sql = "SELECT * FROM questionnaire";
+$res = mysqli_query($link, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -30,12 +33,18 @@ $datas = [
             <p class="h6 col">コメント</p>
             <div class="col"></div>
         </div>
-        <?php foreach ($datas as $data) : ?>
-            <div class="row my-1">
-                <div class="col"><?php echo $data[0] ?></div>
-                <div class="col"><?php echo $data[1] ?></div>
-                <div class="col"><?php echo $data[2] ?></div>
-                <div class="col"><?php echo $data[3] ?></div>
+        <?php foreach ($res as $result) : ?>
+            <div class="row :my-1">
+                <div class="col"><?php echo $result["id"] ?></div>
+                <div class="col"><?php echo $result["username"] ?></div>
+                <div class="col"><?php
+                                    if ($result["participation_id"] === "1") {
+                                        echo "参加";
+                                    } else {
+                                        echo "不参加";
+                                    }
+                                    ?></div>
+                <div class="col"><?php echo $result["comment"] ?></div>
                 <div class="col">
                     <a href="/edit.php">編集</a>
                     <a href="/delete.php">削除</a>
