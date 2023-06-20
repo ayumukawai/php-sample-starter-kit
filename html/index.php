@@ -1,14 +1,20 @@
 <?php
+
 // データベースへの接続
 $link = mysqli_connect('db', 'root', 'secret', 'sample');
 if ($link == null) {
     die("データベースの接続に失敗しました。");
 }
 
+// 文字化け防止
 mysqli_set_charset($link, 'utf8');
 
+// questionnaireテーブルの取得
 $sql = "SELECT * FROM questionnaire";
+
+// 投稿一覧の取得
 $res = mysqli_query($link, $sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +31,6 @@ $res = mysqli_query($link, $sql);
 <body>
     <div class="container text-left w-75 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート結果</h1>
-
         <div class="row border-bottom border-2 border-dark my-3">
             <p class="h6 col">ID</p>
             <p class="h6 col">氏名</p>
@@ -47,7 +52,7 @@ $res = mysqli_query($link, $sql);
                 <div class="col"><?php echo $result["comment"] ?></div>
                 <div class="col">
                     <a href="/edit.php">編集</a>
-                    <a href="/delete.php">削除</a>
+                    <a href="/delete.php?id=<?php echo $result["id"]; ?>">削除</a>
                 </div>
             </div>
         <?php endforeach ?>
