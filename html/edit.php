@@ -6,13 +6,26 @@ if ($link == null) {
     die("データベースの接続に失敗しました。");
 }
 
-// 投稿IDの代入
-$id = $_GET["id"];
+// POST のときはデータの更新を実行
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    // 投稿IDの代入
+    $post_id = $_POST["id"];
 
-// 投稿内容の取得
-$sql = "SELECT * FROM questionnaire WHERE id = $id;";
-$res = mysqli_query($link, $sql);
-$row = mysqli_fetch_assoc($res);
+    // データの更新
+    $update = "UPDATE questionnaire SET username = '" . $_POST['username'] . "', participation_id = " . $_POST['participation_id'] . ", comment = '" . $_POST['comment'] . "' WHERE id = $id;";
+    mysqli_query($link, $update);
+
+    // ホーム画面にリダイレクト
+    header('Location: http://' . $_SERVER['HTTP_HOST']);
+} else {
+    // 投稿IDの代入
+    $get_id = $_GET["id"];
+
+    // 投稿内容の取得
+    $sql = "SELECT * FROM questionnaire WHERE id = $get_id;";
+    $res = mysqli_query($link, $sql);
+    $row = mysqli_fetch_assoc($res);
+}
 
 ?>
 
@@ -30,7 +43,7 @@ $row = mysqli_fetch_assoc($res);
 <body>
     <div class="container text-left w-25 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート</h1>
-        <form method="POST" action="./edit_done.php">
+        <form method="POST" action="./edit.php">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
                 <input type="text" name="username" value=<?= $row["username"] ?> />
