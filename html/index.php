@@ -6,9 +6,6 @@ if ($link == null) {
     die("データベースの接続に失敗しました。");
 }
 
-// 文字化け防止
-mysqli_set_charset($link, 'utf8');
-
 // questionnaireテーブルの取得
 $sql = "SELECT * FROM questionnaire";
 
@@ -40,19 +37,19 @@ $res = mysqli_query($link, $sql);
         </div>
         <?php foreach ($res as $result) : ?>
             <div class="row :my-1">
-                <div class="col"><?php echo $result["id"] ?></div>
-                <div class="col"><?php echo $result["username"] ?></div>
+                <div class="col"><?= $result["id"] ?></div>
+                <div class="col"><?= $result["username"] ?></div>
                 <div class="col"><?php
                                     if ($result["participation_id"] === "1") {
-                                        echo "参加";
+                                        echo "参加！";
                                     } else {
-                                        echo "不参加";
+                                        echo "不参加で。。。";
                                     }
                                     ?></div>
-                <div class="col"><?php echo $result["comment"] ?></div>
+                <div class="col"><?= $result["comment"] ?></div>
                 <div class="col">
-                    <a href="/edit.php">編集</a>
-                    <a href="/delete.php?id=<?php echo $result["id"]; ?>">削除</a>
+                    <a href="/edit.php?id=<?= $result["id"]; ?>">編集</a>
+                    <a href="/delete.php?id=<?= $result["id"]; ?>">削除</a>
                 </div>
             </div>
         <?php endforeach ?>

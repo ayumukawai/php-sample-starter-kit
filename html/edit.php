@@ -1,6 +1,21 @@
 <?php
 
+// データベースへの接続
+$link = mysqli_connect('db', 'root', 'secret', 'sample');
+if ($link == null) {
+    die("データベースの接続に失敗しました。");
+}
+
+// 投稿IDの代入
+$id = $_GET["id"];
+
+// 投稿内容の取得
+$sql = "SELECT * FROM questionnaire WHERE id = $id;";
+$res = mysqli_query($link, $sql);
+$row = mysqli_fetch_assoc($res);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -15,26 +30,34 @@
 <body>
     <div class="container text-left w-25 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート</h1>
-        <form method="POST" action="./add.php">
+        <form method="POST" action="./edit_done.php">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" />
+                <input type="text" name="username" value=<?= $row["username"] ?> />
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
-                <select name="participation_id" class="">
+                <select name="participation_id">
                     <option value="1">参加！</option>
                     <option value="2">不参加で。。。</optiohn>
+                    <option value="" selected hidden><?php
+                                                        if ($row["participation_id"] === "1") {
+                                                            echo "参加！";
+                                                        } else {
+                                                            echo "不参加で。。。";
+                                                        }
+                                                        ?></option>
                 </select>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment"></textarea>
+                <textarea name="comment"><?= $row["comment"] ?></textarea>
             </div>
             <div class="mt-3">
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
                 <button type="submit" class="btn btn-secondary">送信</button>
             </div>
+            <input type="hidden" name="id" value="<?= $row["id"]; ?>" />
         </form>
     </div>
 </body>

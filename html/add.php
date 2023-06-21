@@ -1,4 +1,5 @@
 <?php
+
 // POST のときはデータの投入を実行
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   // データベースへの接続
@@ -15,7 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   // ホーム画面にリダイレクト
   header('Location: http://' . $_SERVER['HTTP_HOST']);
 }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -37,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       </div>
       <div class="d-flex flex-column mt-3">
         <label for="participation_id">新人歓迎会に参加しますか？:</label>
-        <select name="participation_id" class="">
+        <select name="participation_id">
           <option value="1">参加！</option>
           <option value="2">不参加で。。。</optiohn>
         </select>
