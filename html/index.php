@@ -37,8 +37,8 @@ $res = mysqli_query($link, $sql);
         </div>
         <?php foreach ($res as $result) : ?>
             <div class="row :my-1">
-                <div class="col"><?= $result["id"] ?></div>
-                <div class="col"><?= $result["username"] ?></div>
+                <div class="col"><?= htmlspecialchars($result["id"], ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="col"><?= htmlspecialchars($result["username"], ENT_QUOTES, 'UTF-8'); ?></div>
                 <div class="col"><?php
                                     if ($result["participation_id"] === "1") {
                                         echo "参加！";
@@ -46,7 +46,7 @@ $res = mysqli_query($link, $sql);
                                         echo "不参加で。。。";
                                     }
                                     ?></div>
-                <div class="col"><?= $result["comment"] ?></div>
+                <div class="col"><?= htmlspecialchars($result["comment"], ENT_QUOTES, 'UTF-8'); ?></div>
                 <div class="col">
                     <a href="/edit.php?id=<?= $result["id"]; ?>">編集</a>
                     <a href="/delete.php?id=<?= $result["id"]; ?>">削除</a>

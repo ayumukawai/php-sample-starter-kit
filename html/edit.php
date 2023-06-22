@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         <form method="POST" action="./edit.php">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" value=<?= $row["username"] ?> />
+                <input type="text" name="username" value=<?= htmlspecialchars($row["username"], ENT_QUOTES, 'UTF-8'); ?> />
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment"><?= $row["comment"] ?></textarea>
+                <textarea name="comment"><?= htmlspecialchars($row["comment"], ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
             <div class="mt-3">
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
