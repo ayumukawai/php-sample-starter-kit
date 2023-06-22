@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $post_id = $_POST["id"];
 
     // データの更新
+
     $update = "UPDATE questionnaire SET username = '" . $_POST['username'] . "', participation_id = " . $_POST['participation_id'] . ", comment = '" .  $_POST['comment']  . "' WHERE id = $post_id;";
     mysqli_query($link, $update);
 
@@ -53,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <select name="participation_id">
                     <option value="1">参加！</option>
                     <option value="2">不参加で。。。</optiohn>
-                    <option value="" selected hidden><?php
-                                                        if ($row["participation_id"] === "1") {
-                                                            echo "参加！";
-                                                        } else {
-                                                            echo "不参加で。。。";
-                                                        }
-                                                        ?></option>
+                    <option value=<?= $row["participation_id"] ?> selected hidden><?php
+                                                                                    if ($row["participation_id"] === "1") {
+                                                                                        echo "参加！";
+                                                                                    } else {
+                                                                                        echo "不参加で。。。";
+                                                                                    }
+                                                                                    ?></option>
                 </select>
             </div>
             <div class="d-flex flex-column mt-3">
