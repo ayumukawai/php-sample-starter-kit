@@ -36,7 +36,7 @@ $res = mysqli_query($link, $sql);
             <div class="col"></div>
         </div>
         <?php foreach ($res as $result) : ?>
-            <div class="row :my-1">
+            <div class="row border-bottom border-1 border-sedondary py-2">
                 <div class="col"><?= htmlspecialchars($result["id"], ENT_QUOTES, 'UTF-8'); ?></div>
                 <div class="col"><?= htmlspecialchars($result["username"], ENT_QUOTES, 'UTF-8'); ?></div>
                 <div class="col"><?php
