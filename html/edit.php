@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $post_id = $_POST["id"];
 
     // データの更新
-    $update = "UPDATE questionnaire SET username = '" . $_POST['username'] . "', participation_id = " . $_POST['participation_id'] . ", comment = '" . $_POST['comment'] . "' WHERE id = $id;";
+    $update = "UPDATE questionnaire SET username = '" . $_POST['username'] . "', participation_id = " . $_POST['participation_id'] . ", comment = '" .  $_POST['comment']  . "' WHERE id = $post_id;";
     mysqli_query($link, $update);
 
     // ホーム画面にリダイレクト
