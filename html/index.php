@@ -1,4 +1,5 @@
 <?php
+require('./functions.php');
 
 // データベースへの接続
 $link = mysqli_connect('db', 'root', 'secret', 'sample');
@@ -37,8 +38,8 @@ $res = mysqli_query($link, $sql);
         </div>
         <?php foreach ($res as $result) : ?>
             <div class="row border-bottom border-1 border-sedondary py-2">
-                <div class="col"><?= htmlspecialchars($result["id"], ENT_QUOTES, 'UTF-8'); ?></div>
-                <div class="col"><?= htmlspecialchars($result["username"], ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="col"><?= h($result["id"]); ?></div>
+                <div class="col"><?= h($result["username"]); ?></div>
                 <div class="col"><?php
                                     if ($result["participation_id"] === "1") {
                                         echo "参加！";
@@ -46,7 +47,7 @@ $res = mysqli_query($link, $sql);
                                         echo "不参加で。。。";
                                     }
                                     ?></div>
-                <div class="col"><?= htmlspecialchars($result["comment"], ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="col"><?= h($result["comment"]); ?></div>
                 <div class="col">
                     <a href="/edit.php?id=<?= $result["id"]; ?>">編集</a>
                     <a href="/delete.php?id=<?= $result["id"]; ?>">削除</a>

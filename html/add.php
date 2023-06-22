@@ -1,7 +1,12 @@
 <?php
+require('./functions.php');
+
+createToken();
 
 // POST のときはデータの投入を実行
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
+  validateToken();
+
   // データベースへの接続
   $link = mysqli_connect('db', 'root', 'secret', 'sample');
   if ($link == null) {
