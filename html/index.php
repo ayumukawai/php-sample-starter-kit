@@ -1,17 +1,21 @@
 <?php
+// 外部ファイルの読み込み
 require('./functions.php');
 
-// データベースへの接続
-$link = mysqli_connect('db', 'root', 'secret', 'sample');
-if ($link == null) {
-    die("データベースの接続に失敗しました。");
+try {
+    // データベースに接続
+    $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
+
+    // SQL文
+    $sql = "SELECT * FROM questionnaire";
+
+    // SQLの実行
+    $res = $pdo->query($sql);
+} catch (PDOException $e) {
+    echo $e->getMessage();
+} finally {
+    $pdo = null;
 }
-
-// questionnaireテーブルの取得
-$sql = "SELECT * FROM questionnaire";
-
-// 投稿一覧の取得
-$res = mysqli_query($link, $sql);
 
 ?>
 

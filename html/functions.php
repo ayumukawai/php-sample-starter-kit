@@ -1,10 +1,12 @@
 <?php
 
+// XSS対策
 function h($str)
 {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
+// CSRF対策
 function createToken()
 {
     if (!isset($_SESSION['token'])) {
@@ -16,8 +18,10 @@ function validateToken()
 {
     if (
         empty($_SESSION['token']) ||
-        $_SESSION['token'] !== filter_input(INPUT_POST, 'token')
+        $_SESSION['token'] !== $_POST['token']
     ) {
-        exit('そのリクエストは無効です。');
+        exit('Invalid post request');
     }
 }
+
+session_start();

@@ -1,4 +1,5 @@
 <?php
+// 外部ファイルの読み込み
 require('./functions.php');
 
 createToken();

@@ -17,6 +17,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: sample
+      MYSQL_USER: root
       TZ: Asia/Tokyo
     ports:
       - "13307:3306"
