@@ -8,29 +8,23 @@ createToken();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // トークンの確認
   validateToken();
-
   try {
     // データベースに接続
     $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
-
     // POSTされた情報を変数に格納
     $username = $_POST["username"];
     $participation_id = $_POST["participation_id"];
     $comment = $_POST["comment"];
-
     // SQL文
     $sql = "INSERT INTO questionnaire (username, participation_id, comment) VALUES (:username, :participation_id, :comment)";
     // 実行するSQLの準備
     $stmt = $pdo->prepare($sql);
-
-    // 値をバインド
+    // 値をバインド(SQLインジェクション対策)    // 値をバインド
     $stmt->bindValue(":username", $username);
     $stmt->bindValue(":participation_id", $participation_id);
     $stmt->bindValue(":comment", $comment);
-
     // SQLの実行
     $stmt->execute();
-
     // ホーム画面にリダイレクト
     header('Location: index.php');
   } catch (PDOException $e) {

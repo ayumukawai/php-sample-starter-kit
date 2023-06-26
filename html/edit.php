@@ -2,36 +2,53 @@
 // 外部ファイルの読み込み
 require('./functions.php');
 
+// トークンの生成
 createToken();
 
-// データベースへの接続
-$link = mysqli_connect('db', 'root', 'secret', 'sample');
-if ($link == null) {
-    die("データベースの接続に失敗しました。");
-}
+// データベースに接続
+$pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
 
 // POST のときはデータの更新を実行
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    // トークンの確認
     validateToken();
-
-    // 投稿IDの代入
-    $post_id = $_POST["id"];
-
-    // データの更新
-
-    $update = "UPDATE questionnaire SET username = '" . $_POST['username'] . "', participation_id = " . $_POST['participation_id'] . ", comment = '" .  $_POST['comment']  . "' WHERE id = $post_id;";
-    mysqli_query($link, $update);
-
-    // ホーム画面にリダイレクト
-    header('Location: http://' . $_SERVER['HTTP_HOST']);
+    try {
+        // POSTされた情報を変数に格納
+        $id = $_POST["id"];
+        $username = $_POST["username"];
+        $participation_id = $_POST["participation_id"];
+        $comment = $_POST["comment"];
+        // SQL文
+        $sql = "UPDATE questionnaire SET username = :username, participation_id = :participation_id, comment = :comment WHERE id = :id";
+        // 実行するSQLの準備
+        $stmt = $pdo->prepare($sql);
+        // 値をバインド(SQLインジェクション対策)
+        $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":username", $username);
+        $stmt->bindValue(":participation_id", $participation_id);
+        $stmt->bindValue(":comment", $comment);
+        // SQLの実行
+        $stmt->execute();
+        // ホーム画面にリダイレクト
+        header('Location: index.php');
+    } catch (PDOException $e) {
+        echo $e->getmessage();
+    } finally {
+        $pdo = null;
+    }
 } else {
-    // 投稿IDの代入
-    $get_id = $_GET["id"];
-
-    // 投稿内容の取得
-    $sql = "SELECT * FROM questionnaire WHERE id = $get_id;";
-    $res = mysqli_query($link, $sql);
-    $row = mysqli_fetch_assoc($res);
+    try {
+        // 投稿IDの代入
+        $id = $_GET["id"];
+        // 投稿内容の取得
+        $sql = "SELECT * FROM questionnaire WHERE id = $id";
+        $res = $pdo->query($sql);
+        $data = $res->fetch();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    } finally {
+        $pdo = null;
+    }
 }
 
 ?>
@@ -51,17 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     <div class="container text-left w-25 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート</h1>
         <form method="POST" action="./edit.php">
+            <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" value=<?= h($row["username"]); ?> />
+                <input type="text" name="username" value=<?= h($data["username"]); ?> />
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
                 <select name="participation_id">
                     <option value="1">参加！</option>
                     <option value="2">不参加で。。。</optiohn>
-                    <option value=<?= $row["participation_id"] ?> selected hidden><?php
-                                                                                    if ($row["participation_id"] === "1") {
+                    <option value=<?= $data["participation_id"] ?> selected hidden><?php
+                                                                                    if ($data["participation_id"] === 1) {
                                                                                         echo "参加！";
                                                                                     } else {
                                                                                         echo "不参加で。。。";
@@ -71,13 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment"><?= h($row["comment"]); ?></textarea>
+                <textarea name="comment"><?= h($data["comment"]); ?></textarea>
             </div>
             <div class="mt-3">
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
                 <button type="submit" class="btn btn-secondary">送信</button>
             </div>
-            <input type="hidden" name="id" value="<?= $row["id"]; ?>" />
+            <input type="hidden" name="id" value="<?= $data["id"]; ?>" />
         </form>
     </div>
 </body>

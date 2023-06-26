@@ -5,10 +5,8 @@ require('./functions.php');
 try {
     // データベースに接続
     $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
-
     // SQL文
     $sql = "SELECT * FROM questionnaire";
-
     // SQLの実行
     $res = $pdo->query($sql);
 } catch (PDOException $e) {
@@ -45,7 +43,7 @@ try {
                 <div class="col"><?= h($result["id"]); ?></div>
                 <div class="col"><?= h($result["username"]); ?></div>
                 <div class="col"><?php
-                                    if ($result["participation_id"] === "1") {
+                                    if ($result["participation_id"] === 1) {
                                         echo "参加！";
                                     } else {
                                         echo "不参加で。。。";

@@ -20,7 +20,7 @@ function validateToken()
         empty($_SESSION['token']) ||
         $_SESSION['token'] !== $_POST['token']
     ) {
-        exit('Invalid post request');
+        exit('そのリクエストは無効です。');
     }
 }
 
