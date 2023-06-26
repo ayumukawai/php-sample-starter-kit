@@ -1,6 +1,6 @@
 <?php
 // 外部ファイルの読み込み
-require('./functions.php');
+require('./security.php');
 
 // トークンの生成
 createToken();
