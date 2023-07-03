@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $data = $res->fetch();
     } catch (PDOException $e) {
         echo $e->getMessage();
+        exit();
     } finally {
         $pdo = null;
     }
@@ -99,11 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
                 <select name="participation_id" class="form-control">
-                    <option value="1">参加！</option>
-                    <option value="2">不参加で。。。</optiohn>
-                    <option value=<?= $data["participation_id"] ?> selected hidden><?php
-                                                                                    echo $data["participation_id"] === 1 ? "参加！" : "不参加で。。。";
-                                                                                    ?></option>
+                    <option value="1" <?php if ($data["participation_id"] === 1) {
+                                            echo "selected";
+                                        } ?>>参加！</option>
+                    <option value="2" <?php if ($data["participation_id"] === 2) {
+                                            echo "selected";
+                                        } ?>>不参加で。。。</option>
                 </select>
             </div>
             <div class="d-flex flex-column mt-3">

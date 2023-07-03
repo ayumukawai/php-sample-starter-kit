@@ -13,6 +13,7 @@ try {
     header('Location: http://' . $_SERVER['HTTP_HOST']);
 } catch (PDOException $e) {
     echo $e->getMessage();
+    exit();
 } finally {
     $pdo = null;
 }

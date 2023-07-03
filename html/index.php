@@ -11,6 +11,7 @@ try {
     $res = $pdo->query($sql);
 } catch (PDOException $e) {
     echo $e->getMessage();
+    exit();
 } finally {
     $pdo = null;
 }
