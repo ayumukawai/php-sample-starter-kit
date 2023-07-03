@@ -7,14 +7,14 @@ function h($str)
 }
 
 // CSRF対策
-function createToken()
+function create_token()
 {
     if (!isset($_SESSION['token'])) {
         $_SESSION['token'] = bin2hex(random_bytes(32));
     }
 }
 
-function validateToken()
+function validate_token()
 {
     if (
         empty($_SESSION['token']) ||

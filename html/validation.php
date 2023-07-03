@@ -1,49 +1,49 @@
 <?php
 
-function usernameError()
+function username_error()
 {
     if (isset($_POST)) {
         if (empty($_POST['username'])) {
-            $usernameError = "氏名は必須項目です。";
+            $username_error = "氏名は必須項目です。";
         } else if (mb_strlen($_POST['username']) > 20) {
-            $usernameError = "氏名は20文字以内で入力して下さい。";
+            $username_error = "氏名は20文字以内で入力して下さい。";
         } else {
-            $usernameError = "";
+            $username_error = "";
         }
     }
-    return $usernameError;
+    return $username_error;
 }
 
-function commentError()
+function comment_error()
 {
     if (isset($_POST)) {
         if (mb_strlen($_POST['comment']) > 100) {
-            $commentError = "コメントは100文字以内で入力して下さい。";
+            $comment_error = "コメントは100文字以内で入力して下さい。";
         } else {
-            $commentError = "";
+            $comment_error = "";
         }
     }
-    return $commentError;
+    return $comment_error;
 }
 
-function usernameIsInvalid()
+function username_invalid()
 {
-    $usernameError = usernameError();
-    if ($usernameError !== "") {
-        $isInvalidUsername = "is-invalid";
+    $username_error = username_error();
+    if ($username_error !== "") {
+        $invalid_username = "is-invalid";
     } else {
-        $isInvalidUsername = "";
+        $invalid_username = "";
     }
-    return $isInvalidUsername;
+    return $invalid_username;
 }
 
-function commentIsInvalid()
+function comment_invalid()
 {
-    $commentError = commentError();
-    if ($commentError !== "") {
-        $isInvalidComment = "is-invalid";
+    $comment_error = comment_error();
+    if ($comment_error !== "") {
+        $invalid_comment = "is-invalid";
     } else {
-        $isInvalidComment = "";
+        $invalid_comment = "";
     }
-    return $isInvalidComment;
+    return $invalid_comment;
 }

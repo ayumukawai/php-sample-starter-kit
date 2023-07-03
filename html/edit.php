@@ -4,7 +4,7 @@ require('./security.php');
 require('./validation.php');
 
 // トークンの生成
-createToken();
+create_token();
 
 // データベースに接続
 $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
@@ -12,7 +12,7 @@ $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
 // POST のときはデータの更新を実行
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // トークンの確認
-    validateToken();
+    validate_token();
     try {
         // POSTされた情報を変数に格納
         $id = $_POST["id"];
@@ -30,12 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $stmt->bindValue(":comment", $comment);
 
         // バリデーションチェック
-        $usernameError = usernameError();
-        $commentError = commentError();
-        $isInvalidUsername = usernameIsInvalid();
-        $isInvalidComment = commentIsInvalid();
+        $username_error = username_error();
+        $comment_error = comment_error();
+        $invalid_username = username_invalid();
+        $invalid_comment = comment_invalid();
 
-        if ($usernameError === "" && $commentError === "") {
+        if ($username_error === "" && $comment_error === "") {
             // SQLの実行
             $stmt->execute();
 
@@ -93,27 +93,23 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" class="form-control <?= $isInvalidUsername ?>" value=<?= h($data["username"]); ?> />
-                <div class="invalid-feedback"><?php echo $usernameError ?></div>
+                <input type="text" name="username" class="form-control <?= $invalid_username ?>" value=<?= h($data["username"]); ?> />
+                <div class="invalid-feedback"><?= $username_error ?></div>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
-                <select name="participation_id">
+                <select name="participation_id" class="form-control">
                     <option value="1">参加！</option>
                     <option value="2">不参加で。。。</optiohn>
                     <option value=<?= $data["participation_id"] ?> selected hidden><?php
-                                                                                    if ($data["participation_id"] === 1) {
-                                                                                        echo "参加！";
-                                                                                    } else {
-                                                                                        echo "不参加で。。。";
-                                                                                    }
+                                                                                    echo $data["participation_id"] === 1 ? "参加！" : "不参加で。。。";
                                                                                     ?></option>
                 </select>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment" class="form-control <?= $isInvalidComment ?>"><?= h($data["comment"]); ?></textarea>
-                <div class="invalid-feedback"><?php echo $commentError ?></div>
+                <textarea name="comment" class="form-control <?= $invalid_comment ?>"><?= h($data["comment"]); ?></textarea>
+                <div class="invalid-feedback"><?= $comment_error ?></div>
             </div>
             <div class="mt-3">
                 <a href="/index.php" class="btn btn-secondary">戻る</a>

@@ -43,11 +43,7 @@ try {
                 <div class="col"><?= h($result["id"]); ?></div>
                 <div class="col"><?= h($result["username"]); ?></div>
                 <div class="col"><?php
-                                    if ($result["participation_id"] === 1) {
-                                        echo "参加！";
-                                    } else {
-                                        echo "不参加で。。。";
-                                    }
+                                    echo $result["participation_id"] === 1 ? "参加！" : "不参加で。。。";
                                     ?></div>
                 <div class="col"><?= h($result["comment"]); ?></div>
                 <div class="col">
