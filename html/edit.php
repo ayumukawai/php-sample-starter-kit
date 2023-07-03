@@ -1,6 +1,7 @@
 <?php
 // 外部ファイルの読み込み
 require('./security.php');
+require('./validation.php');
 
 // トークンの生成
 createToken();
@@ -27,10 +28,42 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $stmt->bindValue(":username", $username);
         $stmt->bindValue(":participation_id", $participation_id);
         $stmt->bindValue(":comment", $comment);
-        // SQLの実行
-        $stmt->execute();
-        // ホーム画面にリダイレクト
-        header('Location: index.php');
+        // バリデーションチェック
+        $usernameError = usernameValidation();
+        $commentError = commentValidation();
+
+        if ($usernameError !== "") {
+            $isInvalidUsername = "is-invalid";
+            // $pdo = null;
+        } else {
+            $isInvalidUsername = "";
+        }
+
+        if ($commentError !== "") {
+            $isInvalidComment = "is-invalid";
+            // $pdo = null;
+        } else {
+            $isInvalidComment = "";
+        }
+
+        if ($usernameError === "" && $commentError === "") {
+            // SQLの実行
+            $stmt->execute();
+
+            // ホーム画面にリダイレクト
+            header('Location: index.php');
+        } else {
+            try {
+                // 投稿内容の取得
+                $sql = "SELECT * FROM questionnaire WHERE id = $id";
+                $res = $pdo->query($sql);
+                $data = $res->fetch();
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            } finally {
+                $pdo = null;
+            }
+        }
     } catch (PDOException $e) {
         echo $e->getmessage();
     } finally {
@@ -71,7 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" value=<?= h($data["username"]); ?> />
+                <input type="text" name="username" class="form-control <?= $isInvalidUsername ?>" value=<?= h($data["username"]); ?> />
+                <div class="invalid-feedback"><?php echo $usernameError ?></div>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
@@ -89,7 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment"><?= h($data["comment"]); ?></textarea>
+                <textarea name="comment" class="form-control <?= $isInvalidComment ?>"><?= h($data["comment"]); ?></textarea>
+                <div class="invalid-feedback"><?php echo $commentError ?></div>
             </div>
             <div class="mt-3">
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
