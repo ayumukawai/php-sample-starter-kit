@@ -28,23 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $stmt->bindValue(":username", $username);
         $stmt->bindValue(":participation_id", $participation_id);
         $stmt->bindValue(":comment", $comment);
+
         // バリデーションチェック
-        $usernameError = usernameValidation();
-        $commentError = commentValidation();
-
-        if ($usernameError !== "") {
-            $isInvalidUsername = "is-invalid";
-            // $pdo = null;
-        } else {
-            $isInvalidUsername = "";
-        }
-
-        if ($commentError !== "") {
-            $isInvalidComment = "is-invalid";
-            // $pdo = null;
-        } else {
-            $isInvalidComment = "";
-        }
+        $usernameError = usernameError();
+        $commentError = commentError();
+        $isInvalidUsername = usernameIsInvalid();
+        $isInvalidComment = commentIsInvalid();
 
         if ($usernameError === "" && $commentError === "") {
             // SQLの実行

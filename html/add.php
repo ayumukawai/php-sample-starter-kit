@@ -6,6 +6,7 @@ require('./validation.php');
 // トークンの生成
 createToken();
 
+// POST のときはデータの投稿を実行
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // トークンの確認
   validateToken();
@@ -20,28 +21,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sql = "INSERT INTO questionnaire (username, participation_id, comment) VALUES (:username, :participation_id, :comment)";
     // 実行するSQLの準備
     $stmt = $pdo->prepare($sql);
-    // 値をバインド(SQLインジェクション対策)    // 値をバインド
+    // 値をバインド(SQLインジェクション対策)
     $stmt->bindValue(":username", $username);
     $stmt->bindValue(":participation_id", $participation_id);
     $stmt->bindValue(":comment", $comment);
 
     // バリデーションチェック
-    $usernameError = usernameValidation();
-    $commentError = commentValidation();
-
-    if ($usernameError !== "") {
-      $isInvalidUsername = "is-invalid";
-      $pdo = null;
-    } else {
-      $isInvalidUsername = "";
-    }
-
-    if ($commentError !== "") {
-      $isInvalidComment = "is-invalid";
-      $pdo = null;
-    } else {
-      $isInvalidComment = "";
-    }
+    $usernameError = usernameError();
+    $commentError = commentError();
+    $isInvalidUsername = usernameIsInvalid();
+    $isInvalidComment = commentIsInvalid();
 
     if ($usernameError === "" && $commentError === "") {
       // SQLの実行
@@ -49,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       // ホーム画面にリダイレクト
       header('Location: index.php');
+    } else {
+      $pdo = null;
     }
   } catch (PDOException $e) {
     echo $e->getmessage();
