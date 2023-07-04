@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         // POSTされた情報を変数に格納
         $id = $_POST["id"];
         $username = $_POST["username"];
-        $participation_id = $_POST["participation_id"];
+        $participation_id = (int)$_POST["participation_id"];
         $comment = $_POST["comment"];
         // SQL文
         $sql = "UPDATE questionnaire SET username = :username, participation_id = :participation_id, comment = :comment WHERE id = :id";
@@ -38,20 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($username_error === "" && $comment_error === "") {
             // SQLの実行
             $stmt->execute();
-
             // ホーム画面にリダイレクト
             header('Location: index.php');
         } else {
-            try {
-                // 投稿内容の取得
-                $sql = "SELECT * FROM questionnaire WHERE id = $id";
-                $res = $pdo->query($sql);
-                $data = $res->fetch();
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-            } finally {
-                $pdo = null;
-            }
+            $pdo = null;
         }
     } catch (PDOException $e) {
         echo $e->getmessage();
@@ -66,6 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $sql = "SELECT * FROM questionnaire WHERE id = $id";
         $res = $pdo->query($sql);
         $data = $res->fetch();
+        // 投稿内容を変数に代入
+        $username = $data['username'];
+        $participation_id = $data['participation_id'];
+        $comment = $data['comment'];
     } catch (PDOException $e) {
         echo $e->getMessage();
         exit();
@@ -94,23 +88,23 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" class="form-control <?= $invalid_username ?>" value=<?= h($data["username"]); ?> />
+                <input type="text" name="username" class="form-control <?= $invalid_username ?>" value="<?= h($username); ?>" />
                 <div class="invalid-feedback"><?= $username_error ?></div>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
                 <select name="participation_id" class="form-control">
-                    <option value="1" <?php if ($data["participation_id"] === 1) {
+                    <option value="1" <?php if ($participation_id === 1) {
                                             echo "selected";
                                         } ?>>参加！</option>
-                    <option value="2" <?php if ($data["participation_id"] === 2) {
+                    <option value="2" <?php if ($participation_id === 2) {
                                             echo "selected";
                                         } ?>>不参加で。。。</option>
                 </select>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment" class="form-control <?= $invalid_comment ?>"><?= h($data["comment"]); ?></textarea>
+                <textarea name="comment" class="form-control <?= $invalid_comment ?>"><?= h($comment); ?></textarea>
                 <div class="invalid-feedback"><?= $comment_error ?></div>
             </div>
             <div class="mt-3">

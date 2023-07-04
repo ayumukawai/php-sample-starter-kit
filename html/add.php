@@ -6,6 +6,11 @@ require('./validation.php');
 // トークンの生成
 create_token();
 
+// 変数の初期化
+$username = "";
+$participation_id = 1;
+$comment = "";
+
 // POST のときはデータの投稿を実行
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // トークンの確認
@@ -15,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
     // POSTされた情報を変数に格納
     $username = $_POST["username"];
-    $participation_id = $_POST["participation_id"];
+    $participation_id = (int)$_POST["participation_id"];
     $comment = $_POST["comment"];
     // SQL文
     $sql = "INSERT INTO questionnaire (username, participation_id, comment) VALUES (:username, :participation_id, :comment)";
@@ -69,19 +74,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
       <div class="d-flex flex-column mt-3">
         <label for="username">氏名</label>
-        <input type="text" name="username" class="form-control <?= $invalid_username ?>" />
+        <input type="text" name="username" class="form-control <?= $invalid_username ?>" value="<?= h($username); ?>" />
         <div class="invalid-feedback"><?= $username_error ?></div>
       </div>
       <div class="d-flex flex-column mt-3">
         <label for="participation_id">新人歓迎会に参加しますか？:</label>
         <select name="participation_id" class="form-control">
-          <option value="1">参加！</option>
-          <option value="2">不参加で。。。</option>
+          <option value="1" <?php if ($participation_id === 1) {
+                              echo "selected";
+                            } ?>>参加！</option>
+          <option value="2" <?php if ($participation_id === 2) {
+                              echo "selected";
+                            } ?>>不参加で。。。</option>
         </select>
       </div>
       <div class="d-flex flex-column mt-3">
         <label for="comment">コメント:</label>
-        <textarea name="comment" class="form-control <?= $invalid_comment ?>"></textarea>
+        <textarea name="comment" class="form-control <?= $invalid_comment ?>"><?= h($comment); ?></textarea>
         <div class="invalid-feedback"><?= $comment_error ?></div>
       </div>
       <div class="mt-3">
