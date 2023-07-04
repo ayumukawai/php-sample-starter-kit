@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $stmt->execute();
 
       // ホーム画面にリダイレクト
-      header('Location: index.php');
+      header('Location: http://localhost:8080/index.php');
     } else {
       $pdo = null;
     }
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <div class="container text-left w-25 mt-5">
     <h1 class="my-3">新人歓迎会参加アンケート</h1>
     <form method="POST" action="./add.php">
-      <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
+      <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>" />
       <div class="d-flex flex-column mt-3">
         <label for="username">氏名</label>
         <input type="text" name="username" class="form-control <?= $invalid_username ?>" value="<?= h($username); ?>" />

@@ -2,6 +2,9 @@
 // 外部ファイルの読み込み
 require('./security.php');
 
+// トークンの生成
+create_token();
+
 try {
     // データベースに接続
     $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
@@ -48,8 +51,12 @@ try {
                                     ?></div>
                 <div class="col"><?= h($result["comment"]); ?></div>
                 <div class="col">
-                    <a href="/edit.php?id=<?= $result["id"]; ?>">編集</a>
-                    <a href="/delete.php?id=<?= $result["id"]; ?>">削除</a>
+                    <a href="/edit/<?= $result["id"]; ?>">編集</a>
+                    <a href="/delete/<?= $result["id"]; ?>" onclick="document.a_form<?= h($result['id']); ?>.submit(); return false;">削除</a>
+                    <form action="/delete/<?= $result["id"]; ?>" method="POST" name="a_form<?= h($result['id']); ?>">
+                        <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>" />
+                        <input type="hidden" name="id" value="<?= h($result['id']); ?>" />
+                    </form>
                 </div>
             </div>
         <?php endforeach ?>

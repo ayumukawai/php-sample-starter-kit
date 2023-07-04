@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             // SQLの実行
             $stmt->execute();
             // ホーム画面にリダイレクト
-            header('Location: index.php');
+            header('Location: http://localhost:8080/index.php');
         } else {
             $pdo = null;
         }
@@ -51,7 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 } else {
     try {
         // 投稿IDの代入
-        $id = $_GET["id"];
+        $id = $_SERVER['REQUEST_URI'];
+        $id = str_replace("/edit/", "", $id);
+        $id = (int)$id;
         // 投稿内容の取得
         $sql = "SELECT * FROM questionnaire WHERE id = $id";
         $res = $pdo->query($sql);
@@ -84,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 <body>
     <div class="container text-left w-25 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート</h1>
-        <form method="POST" action="./edit.php">
-            <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
+        <form method="POST" action="./<?= $id ?>">
+            <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>" />
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
                 <input type="text" name="username" class="form-control <?= $invalid_username ?>" value="<?= h($username); ?>" />
@@ -111,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
                 <button type="submit" class="btn btn-secondary">送信</button>
             </div>
-            <input type="hidden" name="id" value="<?= $data["id"]; ?>" />
+            <input type="hidden" name="id" value="<?= $id; ?>" />
         </form>
     </div>
 </body>
