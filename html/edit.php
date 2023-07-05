@@ -29,20 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $stmt->bindValue(":participation_id", $participation_id);
         $stmt->bindValue(":comment", $comment);
 
-        // バリデーションチェック
-        $username_error = username_error();
-        $comment_error = comment_error();
-        $invalid_username = username_invalid();
-        $invalid_comment = comment_invalid();
+        // SQLの実行
+        $stmt->execute();
+        
+        // ホーム画面にリダイレクト
+        header('Location: http://localhost:8080/index.php');
 
-        if ($username_error === "" && $comment_error === "") {
-            // SQLの実行
-            $stmt->execute();
-            // ホーム画面にリダイレクト
-            header('Location: http://localhost:8080/index.php');
-        } else {
-            $pdo = null;
-        }
     } catch (PDOException $e) {
         echo $e->getmessage();
     } finally {
@@ -80,19 +72,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>アンケート結果を編集する</title>
+    <script src=" http://localhost:8080/validation.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="validation.js" defer></script>
 </head>
 
 <body>
     <div class="container text-left w-25 mt-5">
         <h1 class="my-3">新人歓迎会参加アンケート</h1>
-        <form method="POST" action="./<?= $id ?>" id="form">
+        <form method="POST" action="./<?= $id ?>">
             <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>" />
             <div class="d-flex flex-column mt-3">
                 <label for="username">氏名</label>
-                <input type="text" name="username" class="form-control <?= $invalid_username ?>" value="<?= h($username); ?>" placeholder="20文字以内で入力してください。" />
-                <div class="invalid-feedback"><?= $username_error ?></div>
+                <input type="text" name="username" id="username" class="form-control" value="<?= h($username); ?>" placeholder="20文字以内で入力してください。" />
+                <div class="invalid-feedback" id="ufeedback"></div>
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="participation_id">新人歓迎会に参加しますか？:</label>
@@ -107,12 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             </div>
             <div class="d-flex flex-column mt-3">
                 <label for="comment">コメント:</label>
-                <textarea name="comment" class="form-control <?= $invalid_comment ?>" placeholder="100文字以内で任意のコメントを入力できます。"><?= h($comment); ?></textarea>
-                <div class="invalid-feedback"><?= $comment_error ?></div>
+                <textarea name="comment" id="comment" class="form-control" placeholder="100文字以内で任意のコメントを入力できます。"><?= h($comment); ?></textarea>
+                <div class="invalid-feedback" id="cfeedback"></div>
             </div>
             <div class="mt-3">
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
-                <button type="submit" class="btn btn-secondary" id="submit">送信</button>
+                <button type="submit" class="btn btn-secondary" id="submitbtn">送信</button>
             </div>
             <input type="hidden" name="id" value="<?= $id; ?>" />
         </form>
