@@ -1,9 +1,4 @@
 {
   "editor.formatOnSave": true,
-  "[PHP]": {
-    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
 }

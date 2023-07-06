@@ -36,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // ホーム画面にリダイレクト
     header('Location: http://localhost:8080/index.php');
-
   } catch (PDOException $e) {
     echo $e->getmessage();
     exit();
@@ -72,12 +71,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <div class="d-flex flex-column mt-3">
         <label for="participation_id">新人歓迎会に参加しますか？:</label>
         <select name="participation_id" class="form-control">
-          <option value="1" <?php if ($participation_id === 1) {
-                              echo "selected";
-                            } ?>>参加！</option>
-          <option value="2" <?php if ($participation_id === 2) {
-                              echo "selected";
-                            } ?>>不参加で。。。</option>
+          <option value="1" <?php if ($participation_id === 1) echo "selected"; ?>> 参加！</option>
+          <option value="2" <?php if ($participation_id === 2) echo "selected"; ?>> 不参加で。。。</option>
         </select>
       </div>
       <div class="d-flex flex-column mt-3">
