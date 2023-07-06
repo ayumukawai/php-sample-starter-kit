@@ -9,8 +9,8 @@ window.addEventListener("DOMContentLoaded", () => {
     userNameError(userName.value);
     commentError(comment.value);
     if (
-      userName.classList.contains("is-invalid") ||
-      comment.classList.contains("is-invalid")
+      userNameError(userName.value) ||
+      commentError(comment.value)
     ) {
       e.preventDefault();
     }
@@ -32,9 +32,13 @@ window.addEventListener("DOMContentLoaded", () => {
     if (string === "") {
       userName.classList.add("is-invalid");
       userNameFeedBack.textContent = "氏名は必須項目です";
+      return true;
     } else if (string.length > 20) {
       userName.classList.add("is-invalid");
       userNameFeedBack.textContent = "氏名は20文字以内で入力してください。";
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -42,6 +46,9 @@ window.addEventListener("DOMContentLoaded", () => {
     if (string.length > 100) {
       comment.classList.add("is-invalid");
       commentFeedBack.textContent = "コメントは100文字以内で入力してください。";
+      return true;
+    }else {
+      return false;
     }
   }
 });
