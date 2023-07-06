@@ -9,13 +9,17 @@ create_token();
 // データベースに接続
 $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
 
+// 投稿IDの代入
+$id = $_SERVER['REQUEST_URI'];
+$id = preg_replace("/[^0-9]/", "", $id);
+$id = (int)$id;
+
 // POST のときはデータの更新を実行
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // トークンの確認
     validate_token();
     try {
         // POSTされた情報を変数に格納
-        $id = $_POST["id"];
         $username = $_POST["username"];
         $participation_id = (int)$_POST["participation_id"];
         $comment = $_POST["comment"];
@@ -42,10 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 } else {
     try {
-        // 投稿IDの代入
-        $id = $_SERVER['REQUEST_URI'];
-        $id = str_replace("/edit/", "", $id);
-        $id = (int)$id;
         // 投稿内容の取得
         $sql = "SELECT * FROM questionnaire WHERE id = $id";
         $res = $pdo->query($sql);
@@ -106,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <a href="/index.php" class="btn btn-secondary">戻る</a>
                 <button type="submit" class="btn btn-secondary" id="submitbtn">送信</button>
             </div>
-            <input type="hidden" name="id" value="<?= $id; ?>" />
         </form>
     </div>
 </body>

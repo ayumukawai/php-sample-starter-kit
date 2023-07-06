@@ -9,7 +9,9 @@ try {
     // データベースに接続
     $pdo = new PDO('mysql:charset=UTF8;dbname=sample;host=db;', 'root', 'secret');
     // 投稿IDの代入
-    $id = $_POST["id"];
+    $id = $_SERVER['REQUEST_URI'];
+    $id = preg_replace("/[^0-9]/", "", $id);
+    $id = (int)$id;
     // SQL文
     $sql = "DELETE FROM questionnaire WHERE id = $id";
     // SQLの実行
